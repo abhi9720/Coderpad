@@ -1,6 +1,6 @@
 import React from "react";
 
-const OutputDetails = ({ outputDetails }) => {
+const OutputDetails = ({ outputDetails, runcode, savecode }) => {
     return (
         <>
 
@@ -30,15 +30,15 @@ const OutputDetails = ({ outputDetails }) => {
                 }
 
 
-                <div className="flex flex-col items-end">
+                {/* <div className="flex flex-col items-end">
                     <span className='font-medium text-slate-500 p-1  mt-5  antialiased'>ShortCut</span>
-                    <span className="font-semibold  p-1 outline outline-gray-100  rounded-lg antialiased">
-                        CTRL+S - Save Code
+                    <span onClick={savecode} className="cursor-pointer font-semibold  p-1 outline outline-gray-100  rounded-lg antialiased hover:bg-indigo-500 hover:text-neutral-50 hover:outline-indigo-100">
+                        CTRL+q - Save Code
                     </span>
-                    <span className="font-semibold p-1 outline outline-gray-100 mt-2 rounded-lg antialiased">
+                    <span onClick={runcode} className="cursor-pointer font-semibold p-1 outline outline-gray-100 mt-2 rounded-lg antialiased hover:bg-indigo-500 hover:text-neutral-50 hover:outline-indigo-100">
                         F9 -  Run Code
                     </span>
-                </div>
+                </div> */}
 
             </div>
 

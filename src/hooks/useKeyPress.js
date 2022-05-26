@@ -6,7 +6,7 @@ const useKeyPress = function (targetKey) {
     function downHandler(e) {
         let key = e.key
         if (key === targetKey) {
-            e.preventDefault();
+
             setKeyPressed(true);
         }
     }
@@ -14,7 +14,7 @@ const useKeyPress = function (targetKey) {
     const upHandler = (e) => {
         let key = e.key
         if (key === targetKey) {
-            e.preventDefault();
+
             setKeyPressed(false);
         }
     };

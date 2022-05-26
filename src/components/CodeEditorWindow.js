@@ -13,13 +13,19 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
         onChange("code", value);
     };
     return (
-        <div className="overlay rounded-md overflow-hidden w-full h-full shadow-4xl">
+        <div className="overlay rounded-md overflow-hidden w-full h-full shadow-4xl"
+
+
+        >
             <Editor
-                height="85vh"
+                height="86.3vh"
                 width={`100%`}
                 language={language || "javascript"}
                 value={value}
                 theme={theme}
+                autoIndent={true}
+                fontSize={30}
+
                 defaultValue="// some comment"
                 onChange={handleEditorChange}
             />
