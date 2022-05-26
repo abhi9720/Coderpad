@@ -27,7 +27,7 @@ const Landing = () => {
     const [customInput, setCustomInput] = useState("");
     const [outputDetails, setOutputDetails] = useState(null);
     const [processing, setProcessing] = useState(null);
-    const [language, setLanguage] = useState(JSON.parse(localStorage.getItem("language")) || languageOptions[9]);
+    const [language, setLanguage] = useState(JSON.parse(localStorage.getItem("language")) || languageOptions[0]);
 
     const onChange = (action, data) => {
         switch (action) {
