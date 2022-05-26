@@ -3,8 +3,7 @@ import Select from "react-select";
 import monacoThemes from "monaco-themes/themes/themelist";
 import { customStyles } from "../constants/customStyles";
 
-const ThemeDropdown = ({ handleThemeChange, Usertheme }) => {
-    console.log(Usertheme);
+const ThemeDropdown = ({ handleThemeChange, theme }) => {
     return (
         <Select
             placeholder={`Select Theme`}
@@ -14,14 +13,11 @@ const ThemeDropdown = ({ handleThemeChange, Usertheme }) => {
                 value: themeId,
                 key: themeId,
             }))}
-            defaultValue={Usertheme}
-
+            value={theme}
             styles={customStyles}
-            onChange={(th) => handleThemeChange(th)}
+            onChange={handleThemeChange}
         />
     )
 }
 
 export default ThemeDropdown
-
-

@@ -4,6 +4,7 @@ import Editor from "@monaco-editor/react";
 
 const CodeEditorWindow = ({ onChange, language, code, theme }) => {
     const [value, setValue] = useState(code || "")
+    console.log(theme);
 
     React.useEffect(() => {
         setValue(code)
