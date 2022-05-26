@@ -238,7 +238,7 @@ const Landing = () => {
                         <LanguagesDropdown onSelectChange={onSelectChange} Userlanguage={language} />
                     </div>
                     <div className="px-4 py-2">
-                        <ThemeDropdown handleThemeChange={handleThemeChange} Usertheme={theme} />
+                        <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
                     </div>
                 </div>
 
@@ -269,16 +269,16 @@ const Landing = () => {
                             >
                                 {processing ? "Processing..." : "Compile and Execute"}
                             </button>
-
-                            <span className='font-medium text-slate-500 p-1  mt-5  antialiased'>ShortCut</span>
+                            {/* <span className='font-medium text-slate-500 p-1  mt-5  antialiased'>ShortCut</span>
                             <span className="font-semibold  p-1 outline outline-gray-100  rounded-lg antialiased">
                                 CTRL+S - Save Code
                             </span>
                             <span className="font-semibold p-1 outline outline-gray-100 mt-2 rounded-lg antialiased">
                                 F9 -  Run Code
-                            </span>
+                            </span> */}
+
                         </div>
-                        {outputDetails && <OutputDetails outputDetails={outputDetails} />}
+                        {<OutputDetails outputDetails={outputDetails} />}
                     </div>
                 </div>
 
