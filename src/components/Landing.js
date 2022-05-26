@@ -19,6 +19,7 @@ import CustomInput from './CustomInput';
 import OutputWindow from './OutputWindow';
 import OutputDetails from './OutputDetails';
 import useKeyPress from '../hooks/useKeyPress';
+
 const defaultCode = `// Type Your code here 1`;
 const Landing = () => {
 
@@ -235,6 +236,43 @@ const Landing = () => {
             progress: undefined,
         });
     };
+
+
+    const handleShare = async () => {
+
+
+
+        try {
+            await navigator.share({
+                files: [
+                    new File([code], 'codetext.txt', { type: "text/plain", }),
+                ],
+                title: 'code',
+                text: 'code',
+            },
+                {
+
+                    copy: true,
+                    email: true,
+                    print: true,
+                    sms: true,
+                    messenger: true,
+                    facebook: true,
+                    whatsapp: true,
+                    twitter: true,
+                    linkedin: true,
+                    telegram: true,
+                    skype: true,
+                    pinterest: true,
+                    language: 'pt'
+                }
+            );
+
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     return (
         <>
             <ToastContainer
@@ -293,6 +331,20 @@ const Landing = () => {
                             <button onClick={resetCode} type="button" class="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 mr-2 mb-2">
                                 Reset
                             </button>
+                            <button onClick={handleShare} type="button" class="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 mr-2 mb-2">
+                                Share
+                            </button>
+                            {/* <RWebShare
+                                data={{
+                                    text: "Web Share - GfG",
+                                    url: "http://localhost:3000",
+                                    title: "GfG",
+                                    files: [new File([code], 'codetext.txt', { type: "text/plain", })]
+                                }}
+                                onClick={() => console.log("shared successfully!")}
+                            >
+                                <button>Share on Web</button>
+                            </RWebShare> */}
 
                         </div>
                     </div >
