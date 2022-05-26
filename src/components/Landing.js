@@ -23,7 +23,7 @@ const Landing = () => {
 
 
     const [code, setCode] = useState(defaultCode);
-    const [theme, setTheme] = useState(JSON.parse(localStorage.getItem("theme")) || "cobalt");
+    const [theme, setTheme] = useState(JSON.parse(localStorage.getItem("theme")) ? JSON.parse(localStorage.getItem("theme")) : "cobalt");
     const [customInput, setCustomInput] = useState("");
     const [outputDetails, setOutputDetails] = useState(null);
     const [processing, setProcessing] = useState(null);
