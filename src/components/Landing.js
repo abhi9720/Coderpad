@@ -203,9 +203,22 @@ const Landing = () => {
 
     }
 
+    function go_full_screen() {
 
+        if (document.fullscreenElement) {
+            document.exitFullscreen()
+                .then(() => console.log("Document Exited from Full screen mode"))
+                .catch((err) => console.error(err))
+        } else {
+            document.documentElement.requestFullscreen();
+        }
+    }
     const makeFullScreen = () => {
+
+        go_full_screen()
+
         setFullScreen(!fullScreen)
+
     }
 
     useEffect(() => {
