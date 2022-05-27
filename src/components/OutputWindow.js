@@ -53,7 +53,7 @@ const OutputWindow = ({ outputDetails, lang, offlineStatus }) => {
     };
     return (
         <>
-            <h1 className="mt-5 font-bold text-xl text-slate-100 bg-clip-text text-transparent mb-2 flex justify-between">
+            <h1 className="mt-5 font-bold text-xl bg-clip-text text-transparent mb-2 flex justify-between" style={{ color: "white" }}>
                 Output
                 {
                     offlineStatus ?
