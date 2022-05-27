@@ -4,7 +4,9 @@ const useKeyPress = function (targetKey) {
     const [keyPressed, setKeyPressed] = React.useState(false);
 
     function downHandler(e) {
+
         let key = e.key
+        console.log(key);
         if (key === targetKey) {
 
             setKeyPressed(true);
