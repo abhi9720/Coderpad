@@ -35,7 +35,26 @@ const Landing = () => {
     const [fullScreen, setFullScreen] = useState(false);
     const [font_size, set_font_size] = useState(16)
     const [language, setLanguage] = useState(JSON.parse(localStorage.getItem("language")) || languageOptions[0]);
+    const [offlineStatus, SetofflineStatus] = useState(false)
 
+    console.log(offlineStatus);
+
+    function setOffline() {
+        SetofflineStatus(true);
+    }
+    function setOnline() {
+        SetofflineStatus(false)
+    }
+
+    useEffect(() => {
+        window.addEventListener('online', setOnline);
+        return () => window.removeEventListener("online", setOnline)
+    })
+
+    useEffect(() => {
+        window.addEventListener('offline', setOffline);
+        return () => window.removeEventListener("offline", setOffline)
+    })
 
 
 
@@ -81,6 +100,7 @@ const Landing = () => {
     const onSelectChange = (sl) => {
         console.log("selected Option...", sl);
         setLanguage(sl);
+        setOutputDetails(null);
         localStorage.setItem("language", JSON.stringify(sl));
     };
 
@@ -127,40 +147,97 @@ const Landing = () => {
     }
 
     const handleCompile = () => {
-
+        console.log(language.value);
         setProcessing(true);
-        const formData = {
-            language_id: language.id,
-            source_code: btoa(code),
-            stdin: btoa(customInput),
-        };
-
-
-        const options = {
-            method: "POST",
-            url: process.env.REACT_APP_RAPID_API_URL,
-            params: { base64_encoded: "true", fields: "*" },
-            headers: {
-                "content-type": "application/json",
-                "Content-Type": "application/json",
-                "X-RapidAPI-Host": process.env.REACT_APP_RAPID_API_HOST,
-                "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
-            },
-            data: formData,
-        };
-
-        axios
-            .request(options)
-            .then(function (response) {
-                console.log("res.data", response.data);
-                const token = response.data.token;
-                checkStatus(token);
-            })
-            .catch((err) => {
-                let error = err.response ? err.response.data : err;
-                setProcessing(false);
-                console.log(error);
+        if (language.value === 'java' || language.value === 'python') {
+            console.log("if part ");
+            let lang = language.value
+            if (lang === 'python') {
+                lang = 'py'
+            }
+            var qs = require('qs');
+            var data = qs.stringify({
+                code: code,
+                language: lang,
+                input: customInput,
             });
+
+
+
+            var config = {
+                method: "post",
+                url: "https://codex-api.herokuapp.com/",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                data: data,
+            };
+
+            axios(config)
+                .then(function (response) {
+
+                    setProcessing(false)
+                    response.data.time = parseFloat((Date.now() - new Date(outputDetails?.timestamp)) / 1000000).toFixed(3);
+
+                    setOutputDetails(response.data)
+
+                    //language: "java"
+                    // output: "hello Abhishek\n"
+                    // success: true
+                    // timestamp: "2022-05-27T10:19:18.256Z"
+                    // version: "11.0.15"
+                    showSuccessToast(`Compiled Successfully!`)
+                })
+                .catch(function (error) {
+                    if (error.code === "ERR_NETWORK") {
+                        showErrorToast("Slow or no internet connection");
+                    }
+                    else {
+                        showErrorToast()
+                    }
+                    setProcessing(false)
+
+
+                });
+        }
+        else {
+
+            console.log("else part ");
+
+            const formData = {
+                language_id: language.id,
+                source_code: btoa(code),
+                stdin: btoa(customInput),
+            };
+
+
+            const options = {
+                method: "POST",
+                url: process.env.REACT_APP_RAPID_API_URL,
+                params: { base64_encoded: "true", fields: "*" },
+                headers: {
+                    "content-type": "application/json",
+                    "Content-Type": "application/json",
+                    "X-RapidAPI-Host": process.env.REACT_APP_RAPID_API_HOST,
+                    "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
+                },
+                data: formData,
+            };
+
+            axios
+                .request(options)
+                .then(function (response) {
+                    console.log("res.data", response.data);
+                    const token = response.data.token;
+                    checkStatus(token);
+                })
+                .catch((err) => {
+                    let error = err.response ? err.response.data : err;
+                    setProcessing(false);
+                    console.log(error);
+                });
+
+        }
     };
 
     const checkStatus = async (token) => {
@@ -344,7 +421,7 @@ const Landing = () => {
             {
                 !fullScreen &&
                 <>
-                    <div className="h-4 w-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 transition duration-200">
+                    <div className="h-2 w-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 transition duration-200">
                     </div>
 
                     <div className="flex flex-row transition duration-200" >
@@ -359,11 +436,11 @@ const Landing = () => {
 
 
 
-                            <div class="d-flex">
-                                <label for="fontsize_lable" class="form-label mb-2 mr-2 font-normal text-gray-900">Font Size</label>
+                            <div class="d-flex border border-gray-100 rounded-md px-2 py-1">
+                                <label for="fontsize_lable" class="form-label mb-2 mr-2 text-base font-semibold text-gray-100">Font Size</label>
                                 <input
                                     type="number"
-                                    class="form-control px-3 py-1.5  text-gray-700 bg-white  border border-solid border-gray-300 rounded transition ease-in-out m-0  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                    class="form-control px-3 py-1  text-gray-700 bg-white  border border-solid border-gray-300 rounded transition ease-in-out m-0  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                     id="fontsize_lable"
                                     placeholder="Font size"
                                     value={font_size}
@@ -382,13 +459,13 @@ const Landing = () => {
 
 
 
-                        <div className="px-4 mt-2 mx-auto justify-end">
-                            <button onClick={makeFullScreen} type="button" className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200  focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
-                                <FaExpand />
+                        <div className="px-4 mt-2 mx-auto flex items-baseline">
+                            <button onClick={makeFullScreen} type="button" className="flex items-center py-2 px-4 mr-3 text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
+                                <FaExpand color="white" />
                             </button>
 
 
-                            <button onClick={handleCompile} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
+                            <button onClick={handleCompile} type="button" className="text-white bg-[#2557D6] hover:bg-[#2557D6]/90   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
 
                                 {
 
@@ -407,14 +484,14 @@ const Landing = () => {
                             </button>
 
 
-                            <button onClick={downloadTxtFile} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
+                            <button onClick={downloadTxtFile} type="button" className="text-white bg-[#2557D6] hover:bg-[#2557D6]/90   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
                                 {"Save Code ( ctrl+q )"}
                             </button>
 
-                            <button onClick={resetCode} type="button" className="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 mr-2 mb-2">
+                            <button onClick={resetCode} type="button" className="text-white bg-[#2557D6] hover:bg-[#2557D6]/90   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
                                 Reset
                             </button>
-                            <button onClick={handleShare} type="button" className="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 mr-2 mb-2">
+                            <button onClick={handleShare} type="button" className="text-white bg-[#2557D6] hover:bg-[#2557D6]/90   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
                                 Share
                             </button>
                             {/* <RWebShare
@@ -435,7 +512,7 @@ const Landing = () => {
             }
 
 
-            < div className="flex flex-row space-x-4 items-start px-4 py-3" >
+            < div className="flex flex-row space-x-4 items-start px-4 pt-2" >
                 <div className="flex flex-col w-full h-full justify-start items-end">
                     <CodeEditorWindow
                         code={code}
@@ -450,22 +527,27 @@ const Landing = () => {
                 </div>
                 <div className="right-container flex flex-shrink-0 w-[30%] flex-col">
                     {
-                        fullScreen && <button onClick={makeFullScreen} type="button" className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center  dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2"
+                        fullScreen && <button onClick={makeFullScreen} type="button" className="flex items-center py-2 px-4 mr-3 text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700"
                             style={{
                                 width: "fit-content"
                             }}>
                             {
-                                fullScreen ? <FaCompress /> : <FaExpand />
+                                fullScreen ? <FaCompress color='white' /> : <FaExpand color='white' />
 
                             }
                         </button>
                     }
-                    <OutputWindow outputDetails={outputDetails} />
+                    <div className=''>
+
+
+                    </div>
+                    <OutputWindow lang={language.value} outputDetails={outputDetails} offlineStatus={offlineStatus} />
                     <div className="flex flex-col items-end">
                         <CustomInput
                             customInput={customInput}
                             setCustomInput={setCustomInput}
                         />
+
                         {fullScreen && <button
                             onClick={handleCompile}
                             disabled={!code || processing}
@@ -479,7 +561,10 @@ const Landing = () => {
 
 
                     </div>
-                    {<OutputDetails runcode={handleCompile} savecode={downloadTxtFile} outputDetails={outputDetails} />}
+                    {<OutputDetails runcode={handleCompile} savecode={downloadTxtFile} outputDetails={outputDetails}
+
+                        lang={language.value}
+                    />}
                 </div>
             </div >
 

@@ -20,14 +20,12 @@ const CodeEditorWindow = ({ onChange, language, code, theme, isFullScreen, Fonto
         >
             <Editor
                 options={Fontoptions}
-                height={isFullScreen ? "96.5vh" : "86vh"}
+                height={isFullScreen ? "96.5vh" : "89vh"}
                 width={`100%`}
                 language={language || "javascript"}
                 value={value}
                 theme={theme}
                 autoIndent={true}
-                fontSize={30}
-
                 defaultValue="// some comment"
                 onChange={handleEditorChange}
             />

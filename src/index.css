@@ -16,7 +16,9 @@ body {
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: 300;
   font-size: 14px;
+  background-color: #0f1724;
 }
+
 
 .listItem:hover {
   background: #e2e8f0;

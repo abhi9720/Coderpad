@@ -8,10 +8,10 @@ export const customStyles = {
         color: "#000",
         fontSize: "0.8rem",
         lineHeight: "1.75rem",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#e2e8f0",
         cursor: "pointer",
         border: "2px solid #000000",
-        boxShadow: "5px 5px 0px 0px rgba(0,0,0);",
+        boxShadow: "5px 5px 0px 0px #ff9119cc;",
         ":hover": {
             border: "2px solid #000000",
             boxShadow: "none",
