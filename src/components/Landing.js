@@ -20,6 +20,9 @@ import OutputWindow from './OutputWindow';
 import OutputDetails from './OutputDetails';
 import useKeyPress from '../hooks/useKeyPress';
 
+
+
+
 const defaultCode = `// Type Your code here 1`;
 const Landing = () => {
 
@@ -30,8 +33,14 @@ const Landing = () => {
     const [outputDetails, setOutputDetails] = useState(null);
     const [processing, setProcessing] = useState(null);
     const [fullScreen, setFullScreen] = useState(false);
-
+    const [font_size, set_font_size] = useState(16)
     const [language, setLanguage] = useState(JSON.parse(localStorage.getItem("language")) || languageOptions[0]);
+
+
+
+
+
+
 
 
 
@@ -317,6 +326,7 @@ const Landing = () => {
         }
     };
 
+
     return (
         <>
             <ToastContainer
@@ -344,13 +354,42 @@ const Landing = () => {
                         <div className="px-4 py-1">
                             <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
                         </div>
+                        {/* <span>fontsize :  {font_size}</span> */}
+                        <div className="px-4 mt-2 justify-end">
+
+
+
+                            <div class="d-flex">
+                                <label for="fontsize_lable" class="form-label mb-2 mr-2 font-normal text-gray-900">Font Size</label>
+                                <input
+                                    type="number"
+                                    class="form-control px-3 py-1.5  text-gray-700 bg-white  border border-solid border-gray-300 rounded transition ease-in-out m-0  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                    id="fontsize_lable"
+                                    placeholder="Font size"
+                                    value={font_size}
+                                    onChange={(e) => set_font_size(parseInt(e.target.value))}
+                                    style={{
+                                        width: "80px"
+                                    }}
+                                />
+
+                            </div>
+
+                        </div>
+
+
+
+
+
+
                         <div className="px-4 mt-2 mx-auto justify-end">
-                            <button onClick={makeFullScreen} type="button" className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+                            <button onClick={makeFullScreen} type="button" className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200  focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
                                 <FaExpand />
                             </button>
 
 
                             <button onClick={handleCompile} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
+
                                 {
 
                                     processing ?
@@ -362,14 +401,14 @@ const Landing = () => {
                                             running...
                                         </>
                                         :
-                                        "F9 -  Run Code"
+                                        "Run ( F9   ) "
 
                                 }
                             </button>
 
 
                             <button onClick={downloadTxtFile} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
-                                CTRL+q - Save Code
+                                {"Save Code ( ctrl+q )"}
                             </button>
 
                             <button onClick={resetCode} type="button" className="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 mr-2 mb-2">
@@ -400,6 +439,9 @@ const Landing = () => {
                 <div className="flex flex-col w-full h-full justify-start items-end">
                     <CodeEditorWindow
                         code={code}
+                        Fontoptions={{
+                            fontSize: font_size
+                        }}
                         onChange={onChange}
                         language={language?.value}
                         theme={theme.value}

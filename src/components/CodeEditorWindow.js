@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 
 import Editor from "@monaco-editor/react";
 
-const CodeEditorWindow = ({ onChange, language, code, theme, isFullScreen }) => {
+
+const CodeEditorWindow = ({ onChange, language, code, theme, isFullScreen, Fontoptions }) => {
     const [value, setValue] = useState(code || "")
 
     React.useEffect(() => {
@@ -18,6 +19,7 @@ const CodeEditorWindow = ({ onChange, language, code, theme, isFullScreen }) => 
 
         >
             <Editor
+                options={Fontoptions}
                 height={isFullScreen ? "96.5vh" : "86vh"}
                 width={`100%`}
                 language={language || "javascript"}
