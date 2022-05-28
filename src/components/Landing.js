@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import CodeEditorWindow from "./CodeEditorWindow";
 import axios from "axios";
-import { languageOptions } from "../constants/languageOptions";
+import { languageOptions, langMap } from "../constants/languageOptions";
 import { snippet } from "../constants/snippet";
 import { classnames } from "../utils/general";
 
 import { FaExpand, FaCompress } from 'react-icons/fa';
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { defineTheme } from "../lib/defineTheme"
-
 import LanguagesDropdown from './LanguageDropdown';
 import ThemeDropdown from './ThemeDropdown';
-
 import CustomInput from './CustomInput';
 import OutputWindow from './OutputWindow';
 import OutputDetails from './OutputDetails';
 import useKeyPress from '../hooks/useKeyPress';
+import DateDiff from 'date-diff';
 
 
 
-
+//Compiler API  deploy on server:  https://github.com/Jaagrav/CodeX-API/tree/master/executeCode
+//Realtime code update : https://github.com/RisingGeek/CodeEditor
 const defaultCode = `// Type Your code here 1`;
 const Landing = () => {
 
@@ -37,7 +35,7 @@ const Landing = () => {
     const [language, setLanguage] = useState(JSON.parse(localStorage.getItem("language")) || languageOptions[0]);
     const [offlineStatus, SetofflineStatus] = useState(false)
 
-    console.log(offlineStatus);
+    // console.log(offlineStatus);
 
     function setOffline() {
         SetofflineStatus(true);
@@ -45,20 +43,30 @@ const Landing = () => {
     function setOnline() {
         SetofflineStatus(false)
     }
+    // reset code 
+    function ctrlplusr(e) {
+
+        if (e.keyCode === 69 && e.ctrlKey) {
+            console.log("reset request");
+            e.preventDefault()
+            resetCode()
+        }
+        else if (e.keyCode === 83 && e.ctrlKey) {
+            e.preventDefault()
+            downloadTxtFile()
+        }
+    }
 
     useEffect(() => {
         window.addEventListener('online', setOnline);
-        return () => window.removeEventListener("online", setOnline)
-    })
-
-    useEffect(() => {
         window.addEventListener('offline', setOffline);
-        return () => window.removeEventListener("offline", setOffline)
+        window.addEventListener('keydown', ctrlplusr);
+        return () => {
+            window.removeEventListener("online", setOnline)
+            window.removeEventListener("offline", setOffline)
+            window.removeEventListener('keydown', ctrlplusr)
+        }
     })
-
-
-
-
 
 
 
@@ -98,7 +106,7 @@ const Landing = () => {
 
 
     const onSelectChange = (sl) => {
-        console.log("selected Option...", sl);
+
         setLanguage(sl);
         setOutputDetails(null);
         localStorage.setItem("language", JSON.stringify(sl));
@@ -113,6 +121,20 @@ const Landing = () => {
         document.body.appendChild(element); // Required for this to work in FireFox
         element.click();
     }
+
+    // function ShareTextFile() {
+    //     console.log(this);
+    //     let element = document.createElement("a");
+
+    //     element.href = "whatsapp://send?text=" + JSON.stringify(code);
+
+    //     document.body.appendChild(element);
+
+    //     element.click();
+
+
+
+    // }
 
     useEffect(() => {
         if (key_run) {
@@ -147,20 +169,20 @@ const Landing = () => {
     }
 
     const handleCompile = () => {
-        console.log(language.value);
+        if (processing) return
         setProcessing(true);
-        if (language.value === 'java' || language.value === 'python') {
+        if (langMap[language.value]) {
             console.log("if part ");
             let lang = language.value
             if (lang === 'python') {
                 lang = 'py'
             }
-            var qs = require('qs');
-            var data = qs.stringify({
+            // var qs = require('qs');
+            var data = {
                 code: code,
                 language: lang,
                 input: customInput,
-            });
+            };
 
 
 
@@ -168,16 +190,21 @@ const Landing = () => {
                 method: "post",
                 url: "https://codex-api.herokuapp.com/",
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Content-Type": "application/json",
                 },
                 data: data,
             };
 
+
             axios(config)
                 .then(function (response) {
 
+
                     setProcessing(false)
-                    response.data.time = parseFloat((Date.now() - new Date(outputDetails?.timestamp)) / 1000000).toFixed(3);
+                    var timeDiff = new DateDiff(new Date(), new Date(outputDetails?.timestamp));
+
+                    response.data.time = (timeDiff.seconds() / 1000).toFixed(3).toString();
+
 
                     setOutputDetails(response.data)
 
@@ -196,6 +223,7 @@ const Landing = () => {
                         showErrorToast()
                     }
                     setProcessing(false)
+                    console.log(error);
 
 
                 });
@@ -436,11 +464,11 @@ const Landing = () => {
 
 
 
-                            <div class="d-flex border border-gray-100 rounded-md px-2 py-1">
-                                <label for="fontsize_lable" class="form-label mb-2 mr-2 text-base font-semibold text-gray-100">Font Size</label>
+                            <div className="d-flex border border-gray-100 rounded-md px-2 py-1">
+                                <label htmlFor="fontsize_lable" className="form-label mb-2 mr-2 text-base font-semibold text-gray-100">Font Size</label>
                                 <input
                                     type="number"
-                                    class="form-control px-3 py-1  text-gray-700 bg-white  border border-solid border-gray-300 rounded transition ease-in-out m-0  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                    className="form-control px-3 py-1  text-gray-700 bg-white  border border-solid border-gray-300 rounded transition ease-in-out m-0  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                     id="fontsize_lable"
                                     placeholder="Font size"
                                     value={font_size}
@@ -487,15 +515,22 @@ const Landing = () => {
 
 
                             <button onClick={downloadTxtFile} type="button" className="text-white bg-indigo-600 hover:bg-indigo-800   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
-                                {"Save Code ( ctrl+q )"}
+                                {"Save Code ( ctrl+s )"}
                             </button>
 
                             <button onClick={resetCode} type="button" className="text-white bg-indigo-600 hover:bg-indigo-800   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
-                                Reset
+                                {"Erase Code ( ctrl+e )"}
                             </button>
                             <button onClick={handleShare} type="button" className="text-white bg-[#db2777] hover:bg-[#ec4899]   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
                                 Share
                             </button>
+
+                            {/* <a href={`whatsapp://send?text=${code}`} data-action="share/whatsapp/share">
+                                
+                                <FaWhatsapp color='green' size="30" />
+                                
+                            </a> */}
+
                             {/* <RWebShare
                                 data={{
                                     text: "Web Share - GfG",

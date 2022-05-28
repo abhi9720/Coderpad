@@ -1,18 +1,18 @@
 import React from 'react'
+import { langMap } from "../constants/languageOptions";
+const OutputWindow = ({ outputDetails, offlineStatus }) => {
 
-const OutputWindow = ({ outputDetails, lang, offlineStatus }) => {
 
-    // console.log(outputDetails.error.indexOf('Timed Out'));
     const getOutput = () => {
-        if (outputDetails.language === 'java' || outputDetails.language === 'py') {
+        if (langMap[outputDetails.language]) {
 
             if (outputDetails.error) {
-                return (<pre className="px-2 py-1 font-normal text-xs text-red-500">
+                return (<pre className="px-2 py-1 font-normal  text-red-500">
                     {outputDetails.error}
                 </pre>)
             }
             else {
-                return (<pre className="px-2 py-1 font-normal text-xs text-green-500">
+                return (<pre className="px-2 py-1 font-normal  text-green-500">
                     {outputDetails.output}
                 </pre>)
             }
@@ -24,13 +24,13 @@ const OutputWindow = ({ outputDetails, lang, offlineStatus }) => {
             if (statusId === 6) {
                 // compilation error
                 return (
-                    <pre className="px-2 py-1 font-normal text-xs text-red-500">
+                    <pre className="px-2 py-1 font-normal  text-red-500">
                         {atob(outputDetails?.compile_output)}
                     </pre>
                 );
             } else if (statusId === 3) {
                 return (
-                    <pre className="px-2 py-1 font-normal text-xs text-green-500">
+                    <pre className="px-2 py-1 font-normal  text-green-500">
                         {atob(outputDetails.stdout) !== null
                             ? `${atob(outputDetails.stdout)}`
                             : null}
@@ -38,13 +38,13 @@ const OutputWindow = ({ outputDetails, lang, offlineStatus }) => {
                 );
             } else if (statusId === 5) {
                 return (
-                    <pre className="px-2 py-1 font-normal text-xs text-red-500">
+                    <pre className="px-2 py-1 font-normal  text-red-500">
                         {`Time Limit Exceeded`}
                     </pre>
                 );
             } else {
                 // return (
-                //     <pre className="px-2 py-1 font-normal text-xs text-red-500">
+                //     <pre className="px-2 py-1 font-normal  text-red-500">
                 //         {atob(outputDetails?.stderr)}
                 //     </pre>
                 // );
@@ -58,14 +58,17 @@ const OutputWindow = ({ outputDetails, lang, offlineStatus }) => {
                 {
                     offlineStatus ?
                         <>
-                            <span className='text-lg text-[#f43f5e]'  >
-                                <span className='text-2xl'>●</span> Internet DisConnected
+
+                            <span className='flex gap-1 items-center text-[#f43f5e]'  >
+                                <span className='text-xl'>●</span>
+                                <span className='text-sm'>Internet DisConnected</span>
                             </span>
                         </>
                         :
                         <>
-                            <span className='text-lg text-[#4ade80]'  >
-                                <span className='text-2xl'>●</span> Internet Connected
+                            <span className='flex gap-1 items-center text-[#4ade80]'  >
+                                <span className='text-xl'>●</span>
+                                <span className='text-sm'>Internet Connected</span>
                             </span>
                         </>
 

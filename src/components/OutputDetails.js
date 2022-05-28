@@ -1,5 +1,5 @@
 import React from "react";
-
+import { langMap } from "../constants/languageOptions";
 const OutputDetails = ({ outputDetails, runcode, savecode }) => {
 
     function status() {
@@ -19,7 +19,7 @@ const OutputDetails = ({ outputDetails, runcode, savecode }) => {
         <>
 
             {
-                (outputDetails?.language === 'java' || outputDetails?.language === 'py') ?
+                (langMap[outputDetails?.language]) ?
                     <>
                         <div className={outputDetails ? "flex justify-between" : "flex justify-end"} >
                             {
