@@ -465,7 +465,9 @@ const Landing = () => {
                             </button>
 
 
-                            <button onClick={handleCompile} type="button" className="text-white bg-[#2557D6] hover:bg-[#2557D6]/90   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
+                            <button
+                                disabled={processing || offlineStatus}
+                                onClick={handleCompile} type="button" className="text-white bg-indigo-600 hover:bg-indigo-800   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
 
                                 {
 
@@ -484,14 +486,14 @@ const Landing = () => {
                             </button>
 
 
-                            <button onClick={downloadTxtFile} type="button" className="text-white bg-[#2557D6] hover:bg-[#2557D6]/90   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
+                            <button onClick={downloadTxtFile} type="button" className="text-white bg-indigo-600 hover:bg-indigo-800   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
                                 {"Save Code ( ctrl+q )"}
                             </button>
 
-                            <button onClick={resetCode} type="button" className="text-white bg-[#2557D6] hover:bg-[#2557D6]/90   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
+                            <button onClick={resetCode} type="button" className="text-white bg-indigo-600 hover:bg-indigo-800   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
                                 Reset
                             </button>
-                            <button onClick={handleShare} type="button" className="text-white bg-[#2557D6] hover:bg-[#2557D6]/90   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
+                            <button onClick={handleShare} type="button" className="text-white bg-[#db2777] hover:bg-[#ec4899]   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
                                 Share
                             </button>
                             {/* <RWebShare
