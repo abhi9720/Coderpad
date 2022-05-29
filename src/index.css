@@ -12,11 +12,77 @@
   padding: 0;
 }
 
+#dragMe:hover {
+  cursor: col-resize;
+}
+
+.resizer {
+  background-color: #374151;
+  cursor: ew-resize;
+  height: 100%;
+  width: 5px;
+  padding: 0px 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: all 0.3s ease-in;
+  border-radius: 5px;
+  margin-left: 4px !important;
+
+}
+
+.resizer:hover {
+  background-color: #64748b;
+}
+
+.resizer:active {
+  background-color: #64748b;
+}
+
+.container__left {
+  /* Initially, the left takes width */
+  width: 68%;
+  min-width: 45%;
+  /* Misc */
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  animation: move-in-steps 2s steps(4, start) infinite;
+}
+
+
+
+* {
+  -webkit-user-drag: none;
+}
+
+textarea {
+  height: 8em;
+  max-height: 12em;
+  min-height: 4em;
+
+}
+
+.container__right {
+  /* Take the remaining width */
+  flex: 1;
+  min-width: 20%;
+  margin-left: 6px !important;
+
+  /* Misc */
+  animation: move-in-steps 2s steps(4, start) infinite;
+
+
+}
+
 body {
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: 300;
   font-size: 14px;
   background-color: #0f1724;
+
 }
 
 

@@ -5,7 +5,7 @@ import { languageOptions, langMap } from "../constants/languageOptions";
 import { snippet } from "../constants/snippet";
 import { classnames } from "../utils/general";
 
-import { FaExpand, FaCompress } from 'react-icons/fa';
+import { FaExpand, FaCompress, FaRegCopy } from 'react-icons/fa';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { defineTheme } from "../lib/defineTheme"
@@ -16,6 +16,7 @@ import OutputWindow from './OutputWindow';
 import OutputDetails from './OutputDetails';
 import useKeyPress from '../hooks/useKeyPress';
 import DateDiff from 'date-diff';
+import copy from 'copy-to-clipboard';
 
 
 
@@ -25,8 +26,18 @@ const defaultCode = `// Type Your code here 1`;
 const Landing = () => {
 
 
+    function loadTheme() {
+        let th = { label: 'Cobalt', value: 'cobalt', key: 'cobalt' }
+        if (localStorage.getItem("usertheme")) {
+
+            th = JSON.parse(localStorage.getItem("usertheme"))
+        }
+        return th;
+
+    }
+
     const [code, setCode] = useState(defaultCode);
-    const [theme, setTheme] = useState("cobalt");
+    const [theme, setTheme] = useState(loadTheme());
     const [customInput, setCustomInput] = useState("");
     const [outputDetails, setOutputDetails] = useState(null);
     const [processing, setProcessing] = useState(null);
@@ -35,7 +46,7 @@ const Landing = () => {
     const [language, setLanguage] = useState(JSON.parse(localStorage.getItem("language")) || languageOptions[0]);
     const [offlineStatus, SetofflineStatus] = useState(false)
 
-    // console.log(offlineStatus);
+
 
     function setOffline() {
         SetofflineStatus(true);
@@ -47,7 +58,7 @@ const Landing = () => {
     function ctrlplusr(e) {
 
         if (e.keyCode === 69 && e.ctrlKey) {
-            console.log("reset request");
+
             e.preventDefault()
             resetCode()
         }
@@ -57,7 +68,9 @@ const Landing = () => {
         }
     }
 
+
     useEffect(() => {
+
         window.addEventListener('online', setOnline);
         window.addEventListener('offline', setOffline);
         window.addEventListener('keydown', ctrlplusr);
@@ -120,6 +133,7 @@ const Landing = () => {
         element.download = `${language.value}-code.txt`;
         document.body.appendChild(element); // Required for this to work in FireFox
         element.click();
+
     }
 
     // function ShareTextFile() {
@@ -153,16 +167,20 @@ const Landing = () => {
 
 
 
+
     async function handleThemeChange(th) {
         const theme = th;
-        console.log("theme...", theme);
+
 
         if (["light", "vs-dark"].includes(theme.value)) {
             setTheme(theme);
         } else {
+
+
             defineTheme(theme.value)
                 .then((_) => {
                     setTheme(theme);
+                    localStorage.setItem("usertheme", JSON.stringify(theme));
                 })
         }
 
@@ -172,7 +190,7 @@ const Landing = () => {
         if (processing) return
         setProcessing(true);
         if (langMap[language.value]) {
-            console.log("if part ");
+            // console.log("if part ");
             let lang = language.value
             if (lang === 'python') {
                 lang = 'py'
@@ -230,7 +248,7 @@ const Landing = () => {
         }
         else {
 
-            console.log("else part ");
+            // console.log("else part ");
 
             const formData = {
                 language_id: language.id,
@@ -255,7 +273,7 @@ const Landing = () => {
             axios
                 .request(options)
                 .then(function (response) {
-                    console.log("res.data", response.data);
+                    // console.log("res.data", response.data);
                     const token = response.data.token;
                     checkStatus(token);
                 })
@@ -320,7 +338,7 @@ const Landing = () => {
 
 
     function launchFullscreen(element) {
-        console.log('called');
+        // console.log('called');
         if (element.requestFullscreen) {
             element.requestFullscreen();
         } else if (element.mozRequestFullScreen) {
@@ -357,7 +375,7 @@ const Landing = () => {
 
     useEffect(() => {
         if (key_fullScreen) {
-            console.log("f11 pressed")
+            // console.log("f11 pressed")
             makeFullScreen()
         }
         //eslint-disable-next-line
@@ -367,10 +385,11 @@ const Landing = () => {
 
 
     useEffect(() => {
-        defineTheme("oceanic-next").then((_) =>
-            setTheme({ value: "oceanic-next", label: "Oceanic Next" })
+
+        defineTheme(theme.value).then((_) =>
+            setTheme(theme)
         );
-    }, []);
+    }, [theme]);
 
     const showSuccessToast = (msg) => {
         toast.success(msg || `Compiled Successfully!`, {
@@ -432,6 +451,74 @@ const Landing = () => {
     };
 
 
+    // =======================* Split view *=====================*****==============
+    useEffect(() => {
+        const resizer = document.getElementById('dragMe');
+        const leftSide = resizer.previousElementSibling;
+        const rightSide = resizer.nextElementSibling;
+
+
+        let x = 0;
+        let leftWidth = 0;
+
+        // Handle the mousedown event
+        // that's triggered when user drags the resizer
+        const mouseDownHandler = function (e) {
+            // Get the current mouse position
+
+            x = e.clientX;
+            leftWidth = leftSide.getBoundingClientRect().width;
+            resizer.style.cursor = 'col-resize';
+            document.body.style.cursor = 'col-resize';
+
+            // Attach the listeners to `document`
+            document.addEventListener('mousemove', mouseMoveHandler);
+            document.addEventListener('mouseup', mouseUpHandler);
+
+        };
+        // Attach the handler
+        resizer.addEventListener('mousedown', mouseDownHandler);
+
+        const mouseMoveHandler = function (e) {
+            // How far the mouse has been moved
+            if (leftSide && rightSide) {
+                const dx = e.clientX - x;
+
+
+                const newLeftWidth = ((leftWidth + dx) * 100) / resizer.parentNode.getBoundingClientRect().width;
+                leftSide.style.width = `${newLeftWidth}%`;
+
+                leftSide.style.userSelect = 'none';
+                leftSide.style.pointerEvents = 'none';
+
+                rightSide.style.userSelect = 'none';
+                rightSide.style.pointerEvents = 'none';
+            }
+        };
+
+
+        const mouseUpHandler = function () {
+            resizer.style.removeProperty('cursor');
+            document.body.style.removeProperty('cursor');
+
+            leftSide.style.removeProperty('user-select');
+            leftSide.style.removeProperty('pointer-events');
+
+            rightSide.style.removeProperty('user-select');
+            rightSide.style.removeProperty('pointer-events');
+
+            // Remove the handlers of `mousemove` and `mouseup`
+            document.removeEventListener('mousemove', mouseMoveHandler);
+            document.removeEventListener('mouseup', mouseUpHandler);
+        };
+    })
+
+
+    const copyToClipboard = () => {
+        copy(code);
+        showSuccessToast('Copied')
+    }
+
     return (
         <>
             <ToastContainer
@@ -465,7 +552,7 @@ const Landing = () => {
 
 
                             <div className="d-flex border border-gray-100 rounded-md px-2 py-1">
-                                <label htmlFor="fontsize_lable" className="form-label mb-2 mr-2 text-base font-semibold text-gray-100">Font Size</label>
+                                <label htmlFor="fontsize_lable" className="form-label mr-2 text-base font-semibold text-gray-100">Font Size</label>
                                 <input
                                     type="number"
                                     className="form-control px-3 py-1  text-gray-700 bg-white  border border-solid border-gray-300 rounded transition ease-in-out m-0  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -487,15 +574,20 @@ const Landing = () => {
 
 
 
-                        <div className="px-4 mt-2 mx-auto flex items-baseline">
-                            <button onClick={makeFullScreen} type="button" className="flex items-center py-2 px-4 mr-3 text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
-                                <FaExpand color="white" />
+                        <div className="px-4  mx-auto justify-end flex items-center" style={{
+                            flex: 1
+                        }} >
+                            <button onClick={copyToClipboard} type="button" id="copytxt" className="flex items-center py-2 px-4 mr-3 mt-1 text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
+                                <FaRegCopy fontSize={18} color="white" />
+                            </button>
+                            <button onClick={makeFullScreen} type="button" className="flex items-center py-2 px-4 mt-1 mr-3 text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
+                                <FaExpand fontSize={16} color="white" />
                             </button>
 
 
                             <button
                                 disabled={processing || offlineStatus}
-                                onClick={handleCompile} type="button" className="text-white bg-indigo-600 hover:bg-indigo-800   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
+                                onClick={handleCompile} type="button" className="text-white bg-indigo-600 hover:bg-indigo-800   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2">
 
                                 {
 
@@ -514,14 +606,14 @@ const Landing = () => {
                             </button>
 
 
-                            <button onClick={downloadTxtFile} type="button" className="text-white bg-indigo-600 hover:bg-indigo-800   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
+                            <button onClick={downloadTxtFile} type="button" className="text-white bg-indigo-600 hover:bg-indigo-800   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2">
                                 {"Save Code ( ctrl+s )"}
                             </button>
 
-                            <button onClick={resetCode} type="button" className="text-white bg-indigo-600 hover:bg-indigo-800   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
+                            <button onClick={resetCode} type="button" className="text-white bg-indigo-600 hover:bg-indigo-800   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2">
                                 {"Erase Code ( ctrl+e )"}
                             </button>
-                            <button onClick={handleShare} type="button" className="text-white bg-[#db2777] hover:bg-[#ec4899]   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2 mb-2">
+                            <button onClick={handleShare} type="button" className="text-white bg-[#db2777] hover:bg-[#ec4899]   focus:outline-none font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center focus:ring-[#2557D6]/50 mr-2">
                                 Share
                             </button>
 
@@ -549,8 +641,11 @@ const Landing = () => {
             }
 
 
-            < div className="flex flex-row space-x-4 items-start px-4 pt-2" >
-                <div className="flex flex-col w-full h-full justify-start items-end">
+            < div className="flex flex-row  space-x-4 items-start px-2 pt-2"
+                style={{
+                    height: fullScreen ? "99vh" : `calc(100vh - 63px )`,
+                }}>
+                <div className="flex flex-col h-full justify-start items-end container__left">
                     <CodeEditorWindow
                         code={code}
                         Fontoptions={{
@@ -562,7 +657,15 @@ const Landing = () => {
                         isFullScreen={fullScreen}
                     />
                 </div>
-                <div className="right-container flex flex-shrink-0 w-[30%] flex-col">
+
+
+                <div className="resizer" id="dragMe">
+                    <svg stroke="currentColor" fill="#f1f5f9" strokeWidth="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
+                    <svg stroke="currentColor" fill="#f1f5f9" strokeWidth="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
+                </div>
+
+                <div className="flex  flex-col container__right"
+                    style={{ flex: "1 1 0%" }}>
                     {
                         fullScreen && <button onClick={makeFullScreen} type="button" className="flex items-center py-2 px-4 mr-3 text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700"
                             style={{
@@ -574,10 +677,7 @@ const Landing = () => {
                             }
                         </button>
                     }
-                    <div className=''>
 
-
-                    </div>
                     <OutputWindow lang={language.value} outputDetails={outputDetails} offlineStatus={offlineStatus} />
                     <div className="flex flex-col items-end">
                         <CustomInput
@@ -604,11 +704,6 @@ const Landing = () => {
                     />}
                 </div>
             </div >
-
-
-
-
-
         </>
 
     )

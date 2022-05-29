@@ -1,6 +1,6 @@
 export const snippet = (language) => {
 
-    console.log(language);
+
     switch (language) {
         case 'javascript':
             return 'console.log("Hello, World!");';
