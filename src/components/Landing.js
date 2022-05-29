@@ -176,7 +176,7 @@ const Landing = () => {
             setTheme(theme);
         } else {
 
-
+            console.log("calling define theme ");
             defineTheme(theme.value)
                 .then((_) => {
                     setTheme(theme);
@@ -385,11 +385,11 @@ const Landing = () => {
 
 
     useEffect(() => {
-
-        defineTheme(theme.value).then((_) =>
-            setTheme(theme)
+        let th = loadTheme();
+        defineTheme(th.value).then((_) =>
+            setTheme(th)
         );
-    }, [theme]);
+    }, []);
 
     const showSuccessToast = (msg) => {
         toast.success(msg || `Compiled Successfully!`, {
