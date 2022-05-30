@@ -29,7 +29,7 @@ const Landing = () => {
     function loadTheme() {
         let th = { label: 'Cobalt', value: 'cobalt', key: 'cobalt' }
         if (localStorage.getItem("usertheme")) {
-
+            console.log("update theme from local storage");
             th = JSON.parse(localStorage.getItem("usertheme"))
         }
         return th;
@@ -37,7 +37,7 @@ const Landing = () => {
     }
 
     const [code, setCode] = useState(defaultCode);
-    const [theme, setTheme] = useState(loadTheme());
+    const [theme, setTheme] = useState("");
     const [customInput, setCustomInput] = useState("");
     const [outputDetails, setOutputDetails] = useState(null);
     const [processing, setProcessing] = useState(null);
@@ -386,9 +386,11 @@ const Landing = () => {
 
     useEffect(() => {
         let th = loadTheme();
-        defineTheme(th.value).then((_) =>
-            setTheme(th)
-        );
+        console.log("calling define theme from useEffect")
+        // defineTheme(th.value).then((_) =>
+        //     setTheme(th)
+        // );
+        handleThemeChange(th);
     }, []);
 
     const showSuccessToast = (msg) => {
