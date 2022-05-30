@@ -17,6 +17,7 @@ import OutputDetails from './OutputDetails';
 import useKeyPress from '../hooks/useKeyPress';
 import DateDiff from 'date-diff';
 import copy from 'copy-to-clipboard';
+import StopWatch from './StopWatch';
 
 
 
@@ -666,7 +667,7 @@ const Landing = () => {
                     <svg stroke="currentColor" fill="#f1f5f9" strokeWidth="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
                 </div>
 
-                <div className="flex  flex-col container__right"
+                <div className="flex  flex-col container__right relative h-full"
                     style={{ flex: "1 1 0%" }}>
                     {
                         fullScreen && <button onClick={makeFullScreen} type="button" className="flex items-center py-2 px-4 mr-3 text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700"
@@ -704,6 +705,9 @@ const Landing = () => {
 
                         lang={language.value}
                     />}
+
+                    <StopWatch />
+
                 </div>
             </div >
         </>
