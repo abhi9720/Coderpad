@@ -33,6 +33,7 @@ const StopWatch = () => {
 
     const handleReset = () => {
         setIsActive(false);
+        setIsPaused(true)
         setTime(0);
     };
     return (
