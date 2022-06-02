@@ -207,7 +207,7 @@ const Landing = () => {
 
             var config = {
                 method: "post",
-                url: "https://codex-api.herokuapp.com/",
+                url: process.env.REACT_APP_BACKEND_URL,
                 headers: {
                     "Content-Type": "application/json",
                 },

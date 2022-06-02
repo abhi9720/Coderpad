@@ -12,8 +12,9 @@ const StopWatch = () => {
 
         if (isActive && isPaused === false) {
             interval = setInterval(() => {
-                setTime((time) => time + 10);
+                setTime((time) => time + 10); // donot do time+10 inside setTime , use prev time in argumen then add in it
             }, 10);
+
         } else {
             clearInterval(interval);
         }
