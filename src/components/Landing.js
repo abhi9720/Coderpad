@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CodeEditorWindow from "./CodeEditorWindow";
 import axios from "axios";
-import { languageOptions, langMap } from "../constants/languageOptions";
+import { languageOptions } from "../constants/languageOptions";
 import { snippet } from "../constants/snippet";
 import { classnames } from "../utils/general";
 
@@ -190,7 +190,8 @@ const Landing = () => {
     const handleCompile = () => {
         if (processing) return
         setProcessing(true);
-        if (langMap[language.value]) {
+        // if (langMap[language.value]) {
+        if (false) {
             // console.log("if part ");
             let lang = language.value
             if (lang === 'python') {
@@ -235,7 +236,7 @@ const Landing = () => {
                     showSuccessToast(`Compiled Successfully!`)
                 })
                 .catch(function (error) {
-                    if (error.code === "ERR_NETWORK") {
+                    if (offlineStatus) {
                         showErrorToast("Slow or no internet connection");
                     }
                     else {
@@ -554,7 +555,7 @@ const Landing = () => {
 
 
 
-                            <div className="d-flex border border-gray-100 rounded-md px-2 py-1">
+                            <div className="d-flex border border-gray-600 rounded-md px-2 py-1">
                                 <label htmlFor="fontsize_lable" className="form-label mr-2 text-base font-semibold text-gray-100">Font Size</label>
                                 <input
                                     type="number"
