@@ -339,36 +339,36 @@ const Landing = () => {
     }
 
 
-    function launchFullscreen(element) {
-        // console.log('called');
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.mozRequestFullScreen) {
-            element.mozRequestFullScreen();
-        } else if (element.webkitRequestFullscreen) {
-            element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) {
-            element.msRequestFullscreen();
-        }
-    }
+    // function launchFullscreen(element) {
+    //     // console.log('called');
+    //     if (element.requestFullscreen) {
+    //         element.requestFullscreen();
+    //     } else if (element.mozRequestFullScreen) {
+    //         element.mozRequestFullScreen();
+    //     } else if (element.webkitRequestFullscreen) {
+    //         element.webkitRequestFullscreen();
+    //     } else if (element.msRequestFullscreen) {
+    //         element.msRequestFullscreen();
+    //     }
+    // }
 
-    function exitFullscreen() {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        }
-    }
+    // function exitFullscreen() {
+    //     if (document.exitFullscreen) {
+    //         document.exitFullscreen();
+    //     } else if (document.mozCancelFullScreen) {
+    //         document.mozCancelFullScreen();
+    //     } else if (document.webkitExitFullscreen) {
+    //         document.webkitExitFullscreen();
+    //     }
+    // }
 
     const makeFullScreen = async () => {
         if (!fullScreen) {
-            launchFullscreen(document.documentElement)
+            // launchFullscreen(document.documentElement)
             setFullScreen(true)
         }
         else {
-            exitFullscreen();
+            // exitFullscreen();
             setFullScreen(false)
         }
 
@@ -378,7 +378,7 @@ const Landing = () => {
     useEffect(() => {
         if (key_fullScreen) {
             // console.log("f11 pressed")
-            makeFullScreen()
+            // makeFullScreen()
         }
         //eslint-disable-next-line
     }, [key_fullScreen]);
@@ -671,7 +671,7 @@ const Landing = () => {
                 <div className="flex  flex-col container__right relative h-full"
                     style={{ flex: "1 1 0%" }}>
                     {
-                        fullScreen && <button onClick={makeFullScreen} type="button" className="flex items-center py-2 px-4 mr-3 text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700"
+                        fullScreen && <button onClick={makeFullScreen} type="button" className="flex items-center py-2 px-4 mr-3 text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700 mt-2"
                             style={{
                                 width: "fit-content"
                             }}>
