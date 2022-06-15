@@ -17,27 +17,27 @@
 }
 
 .resizer {
-  background-color: #374151;
+  background-color: rgb(49 46 129);
+
   cursor: ew-resize;
   height: 100%;
   width: 5px;
-  padding: 0px 2px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   transition: all 0.3s ease-in;
-  border-radius: 5px;
+
   margin-left: 4px !important;
 
 }
 
 .resizer:hover {
-  background-color: #64748b;
+  background-color: rgb(67 56 202)
 }
 
 .resizer:active {
-  background-color: #64748b;
+  background-color: rgb(67 56 202)
 }
 
 .container__left {
@@ -147,4 +147,8 @@ body {
 ::-webkit-scrollbar-thumb:active {
   background: #475569;
   border-radius: 10px;
+}
+
+.css-qc6sy-singleValue {
+  color: white !important;
 }

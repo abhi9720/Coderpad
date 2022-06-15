@@ -543,19 +543,19 @@ const Landing = () => {
                     <div className="h-2 w-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 transition duration-200">
                     </div>
 
-                    <div className="flex flex-row transition duration-200" >
-                        <div className="px-4 py-1">
+                    <div className="flex flex-row transition duration-200 border-b-2 border-indigo-900" >
+                        <div className="mx-2 my-1  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
                             <LanguagesDropdown onSelectChange={onSelectChange} Userlanguage={language} />
                         </div>
-                        <div className="px-4 py-1">
+                        <div className="mx-2 my-1  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
                             <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
                         </div>
                         {/* <span>fontsize :  {font_size}</span> */}
-                        <div className="px-4 mt-2 justify-end">
+                        <div className="px-4 mt-1 justify-end">
 
 
 
-                            <div className="d-flex border border-gray-600 rounded-md px-2 py-1">
+                            <div className="d-flex px-2 py-1 rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
                                 <label htmlFor="fontsize_lable" className="form-label mr-2 text-base font-semibold text-gray-100">Font Size</label>
                                 <input
                                     type="number"
@@ -645,11 +645,11 @@ const Landing = () => {
             }
 
 
-            < div className="flex flex-row  space-x-4 items-start px-2 pt-2"
+            < div className="flex flex-row  space-x-4 items-start px-2"
                 style={{
                     height: fullScreen ? "99vh" : `calc(100vh - 63px )`,
                 }}>
-                <div className="flex flex-col h-full justify-start items-end container__left">
+                <div className="flex flex-col h-full justify-start items-end container__left pt-2">
                     <CodeEditorWindow
                         code={code}
                         Fontoptions={{

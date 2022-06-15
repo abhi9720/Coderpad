@@ -5,15 +5,15 @@ export const customStyles = {
         maxWidth: "14rem",
         minWidth: "12rem",
         borderRadius: "5px",
-        color: "#000",
+        color: "#fff !important",
         fontSize: "0.8rem",
         lineHeight: "1.75rem",
-        backgroundColor: "#e2e8f0",
+        backgroundColor: "transparent",
         cursor: "pointer",
-        border: "2px solid #000000",
-        boxShadow: "5px 5px 0px 0px #ff9119cc;",
+        border: "none",
+
         ":hover": {
-            border: "2px solid #000000",
+
             boxShadow: "none",
         },
     }),
