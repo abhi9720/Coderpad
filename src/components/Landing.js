@@ -556,7 +556,7 @@ const Landing = () => {
 
 
                             <div className="d-flex px-2 py-1 rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
-                                <label htmlFor="fontsize_lable" className="form-label mr-2 text-base font-semibold text-gray-100">Font Size</label>
+                                <label htmlFor="fontsize_lable" className="form-label mr-2 text-gray-100">Font Size</label>
                                 <input
                                     type="number"
                                     className="form-control px-3 py-1  text-gray-700 bg-white  border border-solid border-gray-300 rounded transition ease-in-out m-0  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -649,7 +649,7 @@ const Landing = () => {
                 style={{
                     height: fullScreen ? "99vh" : `calc(100vh - 63px )`,
                 }}>
-                <div className="flex flex-col h-full justify-start items-end container__left pt-2">
+                <div className="flex flex-col h-full justify-start items-end container__left">
                     <CodeEditorWindow
                         code={code}
                         Fontoptions={{

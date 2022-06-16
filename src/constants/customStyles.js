@@ -46,7 +46,7 @@ export const customStyles = {
     placeholder: (defaultStyles) => {
         return {
             ...defaultStyles,
-            color: "#000",
+            color: "#fff !important",
             fontSize: "0.8rem",
             lineHeight: "1.75rem",
         };

@@ -28,16 +28,16 @@
   flex-direction: column;
   transition: all 0.3s ease-in;
 
-  margin-left: 4px !important;
+  margin-left: -1px !important;
 
 }
 
 .resizer:hover {
-  background-color: rgb(67 56 202)
+  background-color: rgb(37 99 235);
 }
 
 .resizer:active {
-  background-color: rgb(67 56 202)
+  background-color: rgb(37 99 235);
 }
 
 .container__left {
@@ -65,11 +65,16 @@ textarea {
 
 }
 
+#react-select-3-input,
+#react-select-5-input {
+  color: white !important;
+}
+
 .container__right {
   /* Take the remaining width */
   flex: 1;
   min-width: 20%;
-  margin-left: 6px !important;
+  margin-left: 5px !important;
 
   /* Misc */
   animation: move-in-steps 2s steps(4, start) infinite;
