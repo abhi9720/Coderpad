@@ -17,7 +17,7 @@
 }
 
 .resizer {
-  background-color: rgb(49 46 129);
+  background-color: #4b5563;
 
   cursor: ew-resize;
   height: 100%;
@@ -74,7 +74,7 @@ textarea {
   /* Take the remaining width */
   flex: 1;
   min-width: 20%;
-  margin-left: 5px !important;
+  margin-left: 0px !important;
 
   /* Misc */
   animation: move-in-steps 2s steps(4, start) infinite;
@@ -86,7 +86,7 @@ body {
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: 300;
   font-size: 14px;
-  background-color: #0f1724;
+  background-color: rgb(15 23 42);
 
 }
 
@@ -156,4 +156,35 @@ body {
 
 .css-qc6sy-singleValue {
   color: white !important;
+}
+
+
+/*  border  hover:text-blue-700 focus:z-10 focus:ring-gray-500   hover:bg-gray-700  */
+.dropdownInner>div {
+  margin-left: 0.5rem;
+  /* 8px */
+  margin-right: 0.5rem;
+  /* 8px */
+
+  margin-top: 0.2rem;
+  /* 40px */
+  margin-bottom: 0.2rem;
+  /* 40px */
+  border-radius: 0.5rem;
+  border: 1px solid;
+  border-color: rgb(75 85 99);
+
+  background-color: rgb(31 41 55);
+  height: fit-content;
+}
+
+.dropdownInner>div:hover {
+  border-color: rgb(55 65 81);
+  background-color: rgb(55 65 81);
+  color: white;
+}
+
+.editorlayout>div {
+  /* -webkit-transition: width .09s linear .001s, height .09s linear .001s; */
+  /* user-select: none; */
 }

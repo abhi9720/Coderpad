@@ -28,7 +28,7 @@ const Landing = () => {
 
 
     function loadTheme() {
-        let th = { label: 'Cobalt', value: 'cobalt', key: 'cobalt' }
+        let th = { label: 'Blackboard', value: 'blackboard', key: 'blackboard' }
         if (localStorage.getItem("usertheme")) {
             console.log("update theme from local storage");
             th = JSON.parse(localStorage.getItem("usertheme"))
@@ -172,7 +172,7 @@ const Landing = () => {
     async function handleThemeChange(th) {
         const theme = th;
 
-
+        console.log(theme);
         if (["light", "vs-dark"].includes(theme.value)) {
             setTheme(theme);
         } else {
@@ -180,6 +180,7 @@ const Landing = () => {
             console.log("calling define theme ");
             defineTheme(theme.value)
                 .then((_) => {
+
                     setTheme(theme);
                     localStorage.setItem("usertheme", JSON.stringify(theme));
                 })
@@ -540,21 +541,18 @@ const Landing = () => {
             {
                 !fullScreen &&
                 <>
-                    <div className="h-2 w-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 transition duration-200">
+                    <div className="h-1 w-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 transition duration-200">
                     </div>
 
-                    <div className="flex flex-row transition duration-200 border-b-2 border-indigo-900" >
-                        <div className="mx-2 my-1  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
+                    <div className="flex flex-row border-2 border-t-0 border-gray-600" >
+                        <div className="dropdownInner">
                             <LanguagesDropdown onSelectChange={onSelectChange} Userlanguage={language} />
                         </div>
-                        <div className="mx-2 my-1  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
+                        <div className="dropdownInner">
                             <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
                         </div>
                         {/* <span>fontsize :  {font_size}</span> */}
                         <div className="px-4 mt-1 justify-end">
-
-
-
                             <div className="d-flex px-2 py-1 rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
                                 <label htmlFor="fontsize_lable" className="form-label mr-2 text-gray-100">Font Size</label>
                                 <input
@@ -568,9 +566,7 @@ const Landing = () => {
                                         width: "80px"
                                     }}
                                 />
-
                             </div>
-
                         </div>
 
 
@@ -581,10 +577,10 @@ const Landing = () => {
                         <div className="px-4  mx-auto justify-end flex items-center" style={{
                             flex: 1
                         }} >
-                            <button onClick={copyToClipboard} type="button" id="copytxt" className="flex items-center py-2 px-4 mr-3 mt-1 text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
+                            <button onClick={copyToClipboard} type="button" id="copytxt" className="flex items-center py-2 px-4 mr-3  text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
                                 <FaRegCopy fontSize={18} color="white" />
                             </button>
-                            <button onClick={makeFullScreen} type="button" className="flex items-center py-2 px-4 mt-1 mr-3 text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
+                            <button onClick={makeFullScreen} type="button" className="flex items-center py-2 px-4 mr-3 text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700">
                                 <FaExpand fontSize={16} color="white" />
                             </button>
 
@@ -645,9 +641,9 @@ const Landing = () => {
             }
 
 
-            < div className="flex flex-row  space-x-4 items-start px-2"
+            < div className="editorlayout flex flex-row  space-x-4 items-start border-2 border-t-0 border-b-0 border-gray-600"
                 style={{
-                    height: fullScreen ? "99vh" : `calc(100vh - 63px )`,
+                    height: fullScreen ? "99vh" : `calc(100vh - 56px )`,
                 }}>
                 <div className="flex flex-col h-full justify-start items-end container__left">
                     <CodeEditorWindow
@@ -668,7 +664,7 @@ const Landing = () => {
                     <svg stroke="currentColor" fill="#f1f5f9" strokeWidth="0" viewBox="0 0 24 24" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg"><path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg>
                 </div>
 
-                <div className="flex  flex-col container__right relative h-full"
+                <div className="flex  flex-col container__right relative h-full px-1 pt-1"
                     style={{ flex: "1 1 0%" }}>
                     {
                         fullScreen && <button onClick={makeFullScreen} type="button" className="flex items-center py-2 px-4 mr-3 text-xs font-medium  rounded-lg border focus:outline-none hover:bg-gray-700 hover:text-blue-700 focus:z-10  focus:ring-gray-500 bg-gray-800 border-gray-600 hover:text-white hover:bg-gray-700 mt-2"

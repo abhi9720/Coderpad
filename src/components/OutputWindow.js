@@ -53,7 +53,7 @@ const OutputWindow = ({ outputDetails, offlineStatus }) => {
     };
     return (
         <>
-            <h1 className="mt-0 font-bold text-xl bg-clip-text text-transparent mb-2 flex justify-between" style={{ color: "white" }}>
+            <h1 className="font-bold text-xl text-transparent mb-2 flex justify-between text-zinc-100">
                 Output
                 {
                     offlineStatus ?
@@ -66,7 +66,7 @@ const OutputWindow = ({ outputDetails, offlineStatus }) => {
                         </>
                         :
                         <>
-                            <span className='flex gap-1 items-center text-[#4ade80]'  >
+                            <span className='flex gap-1 items-center text-[#4ade80] '  >
                                 <span className='text-xl'>●</span>
                                 <span className='text-sm'>Internet Connected</span>
                             </span>
@@ -75,7 +75,7 @@ const OutputWindow = ({ outputDetails, offlineStatus }) => {
                 }
 
             </h1>
-            <div className="w-full h-60 bg-[#1e293b] rounded-md text-white font-normal text-sm overflow-y-auto">
+            <div className="w-full h-60 bg-[#1e293b] shadow-lg rounded-md text-white font-normal text-sm overflow-y-auto border border-gray-600" >
                 {outputDetails ? <>{getOutput()}</> : null}
             </div>
         </>
